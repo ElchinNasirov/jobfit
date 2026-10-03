@@ -26,8 +26,12 @@ def extract_skills(jd: str) -> dict:
     prompt = (
         "Read the job description. Reply with JSON only, no markdown.\n"
         'Shape: {"company": "...", "skills": ["...", "..."]}\n'
-        "6 to 10 concrete skills. Prefer tools over soft skills.\n\n"
-        f"{jd}"
+        "Rules:\n"
+        "- 4 to 8 skills\n"
+        "- every skill must be copied from the job text\n"
+        "- do not add skills from the company name\n"
+        "- do not add robotics, vision, or learning methods unless the text says them\n\n"
+        f"JOB TEXT:\n{jd}"
     )
     raw = ask(prompt)
     return json.loads(raw)
