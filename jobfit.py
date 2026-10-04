@@ -1,27 +1,7 @@
 import json
-import ollama
-from ddgs import DDGS
-
-JD = """
-Company: Northstar Robotics
-Role: Agentic AI Engineer
-We need Python, tool calling, and a way to measure whether the agent is right.
-Nice to have: a small web frontend.
-"""
-
-RESUME = """
-Solo developer. Built web apps with Next.js.
-Finishing Andrew Ng's Machine Learning Specialization.
-Learning agents. Comfortable with Python and APIs.
-Freelance web work. No full-time engineering job yet.
-"""
-
-def ask(prompt: str) -> str:
-    response = ollama.chat(
-        model="llama3.2",
-        messages=[{"role": "user", "content": prompt}],
-    )
-    return response["message"]["content"]
+from search import search_company
+from llm import ask
+from data import JD, RESUME
 
 def extract_skills(jd: str) -> dict:
     prompt = (
@@ -36,21 +16,6 @@ def extract_skills(jd: str) -> dict:
     )
     raw = ask(prompt)
     return json.loads(raw)
-
-def search_company(company: str) -> str:
-    query = f"{company} company what they build"
-    try:
-        rows = list(DDGS().text(query, max_results=3))
-    except Exception as error:
-        return f"(search failed: {error})"
-    if not rows:
-        return "(no search results)"
-    lines = []
-    for row in rows:
-        title = row.get("title", "")
-        body = row.get("body", "")[:200]
-        lines.append(f"- {title}: {body}")
-    return "\n".join(lines)
 
 def score_fit(jd: str, resume: str, skills: dict, notes: str) -> dict:
     prompt = (
