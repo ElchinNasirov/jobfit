@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JobFit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>JobFit</h1>
+    <p>A local agent that reads three job posts and one resume, searches each company, scores fit, and prints a ranking.</p>
+    <p>No paid API. Llama 3.2 runs through Ollama on the same machine. This page does not call the model.</p>
+
+    <h2>Steps</h2>
+    <ol>
+      <li>Extract skills that appear in the job text.</li>
+      <li>Search the web for the company.</li>
+      <li>Score the resume and draft 5 bullets.</li>
+      <li>Repeat for each job, then sort by score.</li>
+    </ol>
+
+    <h2>Sample jobs</h2>
+    <ul>
+      <li>Northstar Robotics — agent engineer</li>
+      <li>Harbor UI — frontend engineer</li>
+      <li>Fieldnote — AI engineer</li>
+    </ul>
+
+    <h2>Sample rank</h2>
+    <pre>
+85 - agent-job - missing: evals, React
+75 - frontend - missing: Python, APIs
+55 - robotics - missing: tool calling, measure agent correctness
+    </pre>
+    <p>The rank is a demo. The local model drifts between runs and sometimes invents experience.</p>
+
+    <p><a href="https://github.com/ElchinNasirov/jobfit">Code on GitHub</a></p>
+  </main>
+</body>
+</html>

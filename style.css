@@ -1,0 +1,23 @@
+body {
+  font-family: Georgia, serif;
+  max-width: 40rem;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  line-height: 1.5;
+  color: #1c1c1c;
+  background: #fafaf8;
+}
+
+h1 {
+  margin-bottom: 0.25rem;
+}
+
+pre {
+  background: #f4f4f4;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+a {
+  color: #0b57d0;
+}

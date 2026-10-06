@@ -1,7 +1,7 @@
 import json
 from search import search_company
 from llm import ask
-from data import JD, RESUME
+from data import JOBS, RESUME
 
 def extract_skills(jd: str) -> dict:
     prompt = (
@@ -42,14 +42,32 @@ def score_fit(jd: str, resume: str, skills: dict, notes: str) -> dict:
     return json.loads(raw)
 
 if __name__ == "__main__":
-    skills = extract_skills(JD)
-    print("SKILLS")
-    print(skills)
+    results = []
 
-    notes = search_company(skills["company"])
-    print("\nCOMPANY NOTES")
-    print(notes)
+    for job in JOBS:
+        print(f"\n===== {job['id']} =====")
+        skills = extract_skills(job["text"])
+        print("\nSKILLS:")
+        print(skills)
 
-    fit = score_fit(JD, RESUME, skills, notes)
-    print("\nFIT")
-    print(json.dumps(fit, indent=2))
+        notes = search_company(skills["company"])
+        print("\nCOMPANY NOTES:")
+        print(notes)
+
+        fit = score_fit(job["text"], RESUME, skills, notes)
+        print("\nFIT:")
+        print(json.dumps(fit, indent=2))
+
+        results.append(
+            {
+                "id": job["id"],
+                "company": skills.get("company", ""),
+                "score": fit.get("score", 0),
+                "missing": fit.get("missing", []),
+            }
+        )
+
+    results.sort(key=lambda row: row["score"], reverse=True)
+    print("\n===== RANK =====")
+    for row in results:
+        print(f"{row['score']:>3} - {row['id']} - missing={row['missing']}")
